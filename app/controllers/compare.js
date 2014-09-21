@@ -3,7 +3,7 @@
 module.exports = {
 
   index: function(req, res) {
-    res.render('welcome/index');
+    res.render('compare/index');
   }
 
 };

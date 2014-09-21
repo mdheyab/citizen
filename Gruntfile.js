@@ -39,7 +39,7 @@ module.exports = function(grunt) {
       },
       server: {
         files: {
-          '<%= root.tmp %>/styles/application.css': '<%= root.app %>/styles/application.styl'
+          '<%= root.tmp %>/styles/main.css': '<%= root.app %>/styles/main.styl'
         }
       }
     },
