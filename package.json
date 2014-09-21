@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/socialscreen/socialscreen-webapp.git"
+    "url": "git@github.com:davidsingal/citizen.git"
   },
   "author": "David Inga <david.inga@icloud.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/socialscreen/socialscreen-webapp/issues"
+    "url": "https://github.com/davidsingal/citizen/issues"
   },
-  "homepage": "https://github.com/socialscreen/socialscreen-webapp",
+  "homepage": "",
   "dependencies": {
     "autoprefixer-stylus": "^0.3.0",
     "body-parser": "^1.8.2",
@@ -39,5 +39,8 @@
     "load-grunt-tasks": "^0.6.0",
     "stylus": "^0.48.1",
     "time-grunt": "^1.0.0"
+  },
+  "engines": {
+    "node": "0.10.x"
   }
 }
