@@ -74,8 +74,8 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
-  grunt.registerTask('heroku:production', [
-    'concurrent:server'
+  grunt.registerTask('heroku', [
+    'stylus:server'
   ]);
 
 };
