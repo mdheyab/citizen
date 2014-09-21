@@ -1,0 +1,32 @@
+body
+  display flex
+  flex-direction column
+  min-height 100vh
+
+.layout-header
+  padding 1em 0
+  position relative
+  z-index 1
+
+  .brand
+    color $color-3
+    margin 0
+
+  .grid-12
+    display flex
+    align-items center
+    justify-content space-between
+
+  .map-page &
+    padding 0
+    top 20px
+
+    .brand, .mod-nav
+      position absolute
+    .mod-nav
+      right 0
+      top 5px
+
+.layout-main
+  flex 1
+  position relative

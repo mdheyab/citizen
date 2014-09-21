@@ -3,9 +3,22 @@ doctype html
 html
   head
     meta(charset="utf-8")
-    title Socialsreen
+    title Citizen
+
+    link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Lato:400,700")
+    link(rel="stylesheet", href="//libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css")
     link(rel="stylesheet", href="/bower_components/normalize-css/normalize.css")
     link(rel="stylesheet", href="/.tmp/styles/main.css")
 
-  body
+    link(rel="icon", href="/app/images/favicon.png", type="image/png")
+
+  body(class="#{page}-page")
+
+    include partials/header
+
     block main
+
+    script(src="//libs.cartocdn.com/cartodb.js/v3/cartodb.js")
+    script(src="/bower_components/requirejs/require.js")
+    script(src="/app/scripts/config.js")
+    script(src="/app/scripts/main.js")

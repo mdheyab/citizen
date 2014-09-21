@@ -8,6 +8,6 @@ module.exports = function(app) {
   app.get('/', welcomeController.index);
   app.get('/district/:district', districtController.index);
   app.get('/compare/:districtA/:districtB', compareController.index);
-  app.get('/about', staticController.about);
+  app.get('/about-the-project', staticController.about);
 
 };

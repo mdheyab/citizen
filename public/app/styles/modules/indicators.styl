@@ -1,0 +1,45 @@
+.mod-indicators
+  position absolute
+  top 50%
+  left 11%
+  max-width 40%
+  margin-top -164px
+  z-index 1
+
+  h1
+    color $color-3
+
+  ul
+    list-style none
+    margin 0
+    padding 0
+
+  a
+    display flex
+    align-items center
+    position relative
+    height 41px
+    padding 0 10px
+    margin 0 -10px
+    color $color-3
+    transition all ease .3s
+
+    &:hover, &.active
+      background-color $color-1
+      text-decoration none
+
+    &:after
+      display block
+      position absolute
+      top 0
+      left 100%
+      content ''
+      width 0
+      height 0
+      border-style solid
+      border-width 20.5px 0 20.5px 10px
+      border-color transparent transparent transparent transparent
+      transition all ease .3s
+
+    &:hover:after, &.active:after
+      border-color transparent transparent transparent $color-1

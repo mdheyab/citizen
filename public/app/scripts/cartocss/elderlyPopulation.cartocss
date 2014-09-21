@@ -1,0 +1,25 @@
+/** choropleth visualization */
+
+#poblacion_anciana {
+  polygon-fill: #eeeeee;
+  polygon-opacity: 0.6;
+  line-color: #1c1c1c;
+  line-width: 1;
+  line-opacity: 1;
+}
+
+#poblacion_anciana [value <= 24.45] {
+  polygon-fill: #3c2825;
+}
+#poblacion_anciana [value <= 23.2] {
+  polygon-fill: #8c3a32;
+}
+#poblacion_anciana [value <= 19.63] {
+  polygon-fill: #db4c3f;
+}
+#poblacion_anciana [value <= 17.99] {
+  polygon-fill: #e49d95;
+}
+#poblacion_anciana [value <= 17.18] {
+  polygon-fill: #eeeeee;
+}
