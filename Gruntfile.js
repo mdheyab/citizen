@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   'use strict';
 
-  // require('time-grunt')(grunt);
+  require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
@@ -82,9 +82,6 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
-  grunt.registerTask('heroku', [
-    'bower',
-    'stylus:server'
-  ]);
+  grunt.registerTask('heroku:production', 'stylus:server');
 
 };
