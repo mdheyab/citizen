@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "test": "grunt test",
-    "postinstall": "bower install && grunt build"
+    "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/grunt-cli/bin/grunt build"
   },
   "repository": {
     "type": "git",
