@@ -14,6 +14,14 @@ module.exports = function(grunt) {
       test: './test'
     },
 
+    bower: {
+      install: {
+        options: {
+          copy: false
+        }
+      }
+    },
+
     jshint: {
       options: {
         jshintrc: '.jshintrc',
@@ -75,6 +83,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('heroku', [
+    'bower',
     'stylus:server'
   ]);
 
