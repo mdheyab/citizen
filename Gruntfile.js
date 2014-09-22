@@ -82,6 +82,8 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
-  grunt.registerTask('heroku:production', 'stylus:server');
+  grunt.registerTask('heroku', [
+    'stylus:server'
+  ]);
 
 };
