@@ -11,16 +11,19 @@ define(['jquery', 'backbone'], function($, Backbone) {
     },
 
     initialize: function() {
-      Backbone.Events.trigger('indicators:change', 'citizen');
+      // Backbone.Events.trigger('indicators:change', 'citizen');
+      this.setListeners();
     },
 
-    changeLayer: function(e) {
-      var target = $(e.currentTarget);
+    setListeners: function() {
+      Backbone.Events.on('presenter:change', this.setCurrentLayer, this);
+    },
 
-      target.closest('ul').find('a').removeClass('active');
-      target.addClass('active');
+    setCurrentLayer: function(presenter) {
+      var current = presenter.get('layer');
 
-      // Backbone.Events.trigger('indicators:change', target.data('layer'));
+      this.$el.find('a').removeClass('active');
+      this.$el.find('a[data-layer="' + current + '"]').addClass('active');
     }
 
   });

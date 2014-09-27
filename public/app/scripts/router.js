@@ -6,8 +6,8 @@ define(['backbone'], function(Backbone) {
 
     routes: {
       '': 'welcome',
-      'layer/:layerSlug': 'layer'
-      // 'district/:layer/:districtId': 'district'
+      'layer/:layerSlug': 'layer',
+      'layer/:layerSlug/:districtId': 'district'
     },
 
     welcome: function() {
@@ -15,11 +15,16 @@ define(['backbone'], function(Backbone) {
     },
 
     layer: function(layerSlug) {
-      Backbone.Events.trigger('layer:change', layerSlug);
+      Backbone.Events.trigger('router:change', {
+        layer: layerSlug
+      });
     },
 
-    district: function(districtId) {
-      console.log(districtId);
+    district: function(layerSlug, districtId) {
+      Backbone.Events.trigger('router:change', {
+        layer: layerSlug,
+        district: districtId
+      });
     }
 
   });

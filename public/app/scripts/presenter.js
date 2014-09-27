@@ -16,8 +16,8 @@ define(['backbone', 'classjs'], function(Backbone, Class) {
         Backbone.Events.trigger('presenter:change', this.model);
       }, this);
 
-      Backbone.Events.on('layer:change', function(layerSlug) {
-        this.model.set('layer', layerSlug);
+      Backbone.Events.on('router:change', function(params) {
+        this.model.set(params);
       }, this);
     }
 
