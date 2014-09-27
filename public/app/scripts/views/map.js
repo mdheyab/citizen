@@ -1,11 +1,9 @@
 define([
-  'underscore',
   'underscoreString',
   'backbone',
-  'text!queries/elderlyPopulation.pgsql',
-  'text!cartocss/elderlyPopulation.cartocss',
+  'collections/layers',
   'text!templates/infowindow.handlebars'
-], function(_, underscoreString, Backbone, elderlyPopulationQuery, elderlyPopulationStyle, infowindowTpl) {
+], function(_, Backbone, LayersCollection, infowindowTpl) {
 
   'use strict';
 
@@ -14,8 +12,11 @@ define([
     el: '#mapView',
 
     options: {
-      // urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
-      urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
+      urlCartoDB: _.str.sprintf('//%(user)s.cartodb.com/api/v1/sql', {
+        user: sessionStorage.getItem('citizen:cartodbuser')
+      }),
+      urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
+      // urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
       map: {
         center: [40.417111100000000000, -3.703113300000041000],
         zoom: 11,
@@ -29,14 +30,7 @@ define([
     },
 
     initialize: function() {
-      this.layers = {
-        'elderly-population': {
-          sql: elderlyPopulationQuery,
-          cartocss: elderlyPopulationStyle,
-          interactivity: 'name, value'
-        }
-      };
-
+      this.layers = new LayersCollection();
       this.$legend = $('#legend');
 
       this.setMap();
@@ -57,29 +51,31 @@ define([
 
       this.removeLegend();
 
+      this.currentLayer = this.layers.findWhere({'slug': layer});
+
       if (this.layer) {
         this.layer.hide();
+        this.infowindow.$el.fadeOut('fast');
       }
 
-      if (!this.layers.hasOwnProperty(layer)) {
+      if (!this.currentLayer) {
         return false;
       }
 
       if (this.layer) {
-        this.layer.setSQL(this.layers[layer].sql);
-        this.layer.setCartoCSS(this.layers[layer].cartocss);
-        this.setLegend();
+        this.layer.setSQL(this.currentLayer.get('sql'));
+        this.layer.setCartoCSS(this.currentLayer.get('cartocss'));
+        // this.setLegend();
         this.layer.show();
       } else {
-        cboptions = _.defaults({sublayers: [this.layers[layer]]}, this.options.cartodb);
+        cboptions = _.defaults({sublayers: [this.currentLayer.toJSON()]}, this.options.cartodb);
 
         cartodb.createLayer(this.map, cboptions)
           .addTo(this.map)
           .on('done', _.bind(function(layer) {
             this.layer = layer.getSubLayer(0);
             this.setInfowindow(cboptions.sublayers[0].interactivity);
-            this.setLegend();
-            this.layer.show();
+            // this.setLegend();
           }, this))
           .on('error', function(err) {
             console.log('some error occurred: ' + err);
@@ -97,7 +93,7 @@ define([
     setLegend: function() {
       var legend;
 
-      $.get(this.getLegendUrl(), {
+      $.get(this.options.urlCartoDB, {
         q: 'SELECT min(porcent_envejecimiento), max(porcent_envejecimiento) FROM poblacion_anciana'
       }, _.bind(function(data) {
         legend = new cdb.geo.ui.Legend({
@@ -105,11 +101,11 @@ define([
           data: [
             { value: data.rows[0].min + '%' },
             { value: data.rows[0].max + '%' },
-            { value: '#eeeeee' },
-            { value: '#e49d95' },
-            { value: '#db4c3f' },
-            { value: '#8c3a32' },
-            { value: '#3c2825' }
+            { value: '#dd4b39' },
+            { value: '#dd4b39' },
+            { value: '#dd4b39' },
+            { value: '#dd4b39' },
+            { value: '#dd4b39' }
           ]
         });
 
@@ -119,12 +115,6 @@ define([
 
     removeLegend: function() {
       this.$legend.html('');
-    },
-
-    getLegendUrl: function() {
-      return _.str.sprintf('//%(user)s.cartodb.com/api/v1/sql', {
-        user: sessionStorage.getItem('citizen:cartodbuser')
-      });
     }
 
   });

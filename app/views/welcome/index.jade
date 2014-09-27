@@ -3,14 +3,21 @@ extends ../layouts/application
 block main
   .mod-indicators#indicatorsView
     ul
-      li: a(href="#citizen-index", data-layer="citizen-index", class="active")= __('citizenIndex')
-      li: a(href="#elderly-population", data-layer="elderly-population")= __('elderlyPopulation')
-      li: a(href="#dilapidated-housing", data-layer="dilapidated-housing")= __('dilapidatedHousing')
-      //- li: a(href="#police", data-layer="police")= __('police')
-      li: a(href="#overcrowding", data-layer="overcrowding")= __('overcrowding')
-      li: a(href="#delinquency", data-layer="delinquency")= __('delinquency')
-      li: a(href="#education", data-layer="education")= __('education')
-      li: a(href="#unemployed", data-layer="unemployed")= __('unemployed')
+      li: a(href="#layer/citizen-index", data-layer="citizen-index", class="active")= __('citizenIndex')
+      li: a(href="#layer/elderly-population", data-layer="elderly-population")= __('elderlyPopulation')
+      li: a(href="#layer/dilapidated-housing", data-layer="dilapidated-housing")= __('dilapidatedHousing')
+      li: a(href="#layer/overcrowding", data-layer="overcrowding")= __('overcrowding')
+      li: a(href="#layer/delinquency", data-layer="delinquency")= __('delinquency')
+      li: a(href="#layer/education", data-layer="education")= __('education')
+      li: a(href="#layer/unemployed", data-layer="unemployed")= __('unemployed')
 
   .mod-map#mapView
     #legend
+
+
+  nav.mod-nav
+    ul
+      //- li:a= __('compare')
+      li: a(href="/about-the-project")= __('about')
+      //- li: a(href="#share")= __('share')
+      li: a(href="/contact")= __('contact')

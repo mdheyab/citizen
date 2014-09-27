@@ -20,9 +20,7 @@ define(['jquery', 'backbone'], function($, Backbone) {
       target.closest('ul').find('a').removeClass('active');
       target.addClass('active');
 
-      Backbone.Events.trigger('indicators:change', target.data('layer'));
-
-      e.preventDefault();
+      // Backbone.Events.trigger('indicators:change', target.data('layer'));
     }
 
   });

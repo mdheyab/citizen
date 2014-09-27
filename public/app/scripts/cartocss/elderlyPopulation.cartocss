@@ -1,25 +1,31 @@
 /** choropleth visualization */
 
-#poblacion_anciana {
+#tasa_de_paro {
   polygon-fill: #eeeeee;
-  polygon-opacity: 0.6;
+  polygon-opacity: 0.1;
   line-color: #1c1c1c;
-  line-width: 1;
+  line-width: 4;
+  line-color: #222222;
   line-opacity: 1;
 }
 
-#poblacion_anciana [value <= 24.45] {
-  polygon-fill: #3c2825;
+#tasa_de_paro [value <= 24.45] {
+  polygon-fill: #dd4b39;
+  polygon-opacity: 0.9;
 }
-#poblacion_anciana [value <= 23.2] {
-  polygon-fill: #8c3a32;
+#tasa_de_paro [value <= 23.2] {
+  polygon-fill: #dd4b39;
+  polygon-opacity: 0.7;
 }
-#poblacion_anciana [value <= 19.63] {
-  polygon-fill: #db4c3f;
+#tasa_de_paro [value <= 19.63] {
+  polygon-fill: #dd4b39;
+  polygon-opacity: 0.5;
 }
-#poblacion_anciana [value <= 17.99] {
-  polygon-fill: #e49d95;
+#tasa_de_paro [value <= 17.99] {
+  polygon-fill: #dd4b39;
+  polygon-opacity: 0.3;
 }
-#poblacion_anciana [value <= 17.18] {
-  polygon-fill: #eeeeee;
+#tasa_de_paro [value <= 17.18] {
+  polygon-fill: #dd4b39;
+  polygon-opacity: 0.1;
 }
