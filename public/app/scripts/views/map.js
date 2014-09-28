@@ -18,7 +18,8 @@ define([
       urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
       // urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
       map: {
-        center: [40.417111100000000000, -3.703113300000041000],
+        // center: [40.417111100000000000, -3.703113300000041000],
+        center: [40.4370180276586, -3.841781616210937],
         zoom: 11,
         zoomControl: false
       },
