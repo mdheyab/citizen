@@ -12,11 +12,15 @@ define([
   'use strict';
 
   var layersData = [{
+    table: 'poblacion_anciana',
+    color: '#dd4b39',
     slug: 'elderly-population',
     sql: elderlyPopulationQuery,
     cartocss: elderlyPopulationStyle,
     interactivity: 'id, name, value'
   }, {
+    table: 'tasa_de_paro',
+    color: '#FFBF40',
     slug: 'unemployed',
     sql: unemployedQuery,
     cartocss: unemployedStyle,
