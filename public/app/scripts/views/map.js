@@ -39,7 +39,8 @@ define([
     },
 
     setListeners: function() {
-      Backbone.Events.on('indicators:change', this.setLayer, this);
+      // Backbone.Events.on('indicators:change', this.setLayer, this);
+      Backbone.Events.on('presenter:change', this.setLayer, this);
     },
 
     setMap: function() {
@@ -47,30 +48,31 @@ define([
       L.tileLayer(this.options.urlTiles).addTo(this.map);
     },
 
-    setLayer: function(layer) {
+    setLayer: function(presenter) {
       var cboptions;
 
       this.removeLegend();
 
-      this.currentLayer = this.layers.findWhere({'slug': layer});
+      this.currentLayer = this.layers.findWhere({'slug': presenter.get('layer')});
 
       if (this.layer) {
         this.layer.hide();
-        this.infowindow.$el.fadeOut('fast');
+        this.infowindow.remove();
       }
 
       if (!this.currentLayer) {
         return false;
       }
 
+      cboptions = _.defaults({sublayers: [this.currentLayer.toJSON()]}, this.options.cartodb);
+
       if (this.layer) {
         this.layer.setSQL(this.currentLayer.get('sql'));
         this.layer.setCartoCSS(this.currentLayer.get('cartocss'));
+        this.setInfowindow(cboptions.sublayers[0].interactivity);
         // this.setLegend();
         this.layer.show();
       } else {
-        cboptions = _.defaults({sublayers: [this.currentLayer.toJSON()]}, this.options.cartodb);
-
         cartodb.createLayer(this.map, cboptions)
           .addTo(this.map)
           .on('done', _.bind(function(layer) {
@@ -87,7 +89,9 @@ define([
 
     setInfowindow: function(interactivity) {
       this.infowindow = cdb.vis.Vis.addInfowindow(this.map, this.layer, interactivity, {
-        infowindowTemplate: infowindowTpl
+        infowindowTemplate: _.str.sprintf(infowindowTpl, {
+          layer: this.currentLayer.get('slug')
+        })
       });
     },
 
