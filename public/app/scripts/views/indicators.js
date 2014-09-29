@@ -11,7 +11,6 @@ define(['jquery', 'backbone'], function($, Backbone) {
     },
 
     initialize: function() {
-      // Backbone.Events.trigger('indicators:change', 'citizen');
       this.setListeners();
     },
 
