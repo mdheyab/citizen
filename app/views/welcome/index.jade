@@ -1,23 +1,45 @@
 extends ../layouts/application
 
 block main
-  .mod-indicators#indicatorsView
-    ul
-      li: a(href="#layer/citizen-index", data-layer="citizen-index", class="active")= __('citizenIndex')
-      li: a(href="#layer/elderly-population", data-layer="elderly-population")= __('elderlyPopulation')
-      li: a(href="#layer/dilapidated-housing", data-layer="dilapidated-housing")= __('dilapidatedHousing')
-      li: a(href="#layer/overcrowding", data-layer="overcrowding")= __('overcrowding')
-      li: a(href="#layer/delinquency", data-layer="delinquency")= __('delinquency')
-      li: a(href="#layer/education", data-layer="education")= __('education')
-      li: a(href="#layer/unemployed", data-layer="unemployed")= __('unemployed')
+  .layout-header
+    .layout-map
+      .mod-map#mapView
+        #legend
+      .mod-indicators#indicatorsView
+        h1 Índice de bienestar ciudadano
+        ul
+          li: a(href="#layer/citizen-index", data-layer="citizen-index", class="active")= __('citizenIndex')
+          li: a(href="#layer/elderly-population", data-layer="elderly-population")= __('elderlyPopulation')
+          li: a(href="#layer/dilapidated-housing", data-layer="dilapidated-housing")= __('dilapidatedHousing')
+          li: a(href="#layer/overcrowding", data-layer="overcrowding")= __('overcrowding')
+          li: a(href="#layer/delinquency", data-layer="delinquency")= __('delinquency')
+          li: a(href="#layer/education", data-layer="education")= __('education')
+          li: a(href="#layer/unemployed", data-layer="unemployed")= __('unemployed')
+    .layout-sidebar
+      .layout-sidebar-content
+        .wrap
+          .row
+            .grid-12
+              .mod-detail#detailView
+                button X
+                h2 Tetuán
 
-  .mod-map#mapView
-    #legend
+  .layout-content
+    .wrap
+      .row
+        .grid-12
+          h1 Cómo se ha hecho el índice
+
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin, nunc nec rutrum elementum, ex turpis aliquet urna, in fringilla quam ligula id mi. Praesent vestibulum libero ut tincidunt iaculis. Nullam vel augue sed ex posuere gravida sed at diam. Fusce nibh ligula, varius luctus magna in, vehicula elementum turpis. Ut eget elit et ante mollis blandit sit amet eu elit. Suspendisse nec felis tincidunt, malesuada turpis eget, tincidunt purus. Ut malesuada lacinia scelerisque. Cras non odio non mi vestibulum accumsan. Suspendisse consectetur ligula nunc, vel facilisis elit egestas in.
+          p Donec diam tellus, rutrum nec laoreet non, maximus interdum lectus. Vestibulum congue, leo in tincidunt efficitur, metus dolor elementum nunc, porta aliquam lectus sapien quis elit. Curabitur auctor ex ac quam placerat pulvinar. Sed consectetur ex vitae porttitor fermentum. Integer consequat ex feugiat tellus pulvinar lobortis. Praesent in erat eu nisi mattis accumsan at viverra odio. Sed facilisis fringilla tortor eget blandit. Nam mattis imperdiet tristique. Suspendisse fermentum odio leo. Nam vulputate dui leo, eget commodo ipsum commodo nec.
+
+  //- .mod-map#mapView
+  //-   #legend
 
 
-  nav.mod-nav
-    ul
-      //- li:a= __('compare')
-      li: a(href="/about-the-project")= __('about')
-      //- li: a(href="#share")= __('share')
-      li: a(href="/contact")= __('contact')
+  //- nav.mod-nav
+  //-   ul
+  //-     //- li:a= __('compare')
+  //-     li: a(href="/about-the-project")= __('about')
+  //-     //- li: a(href="#share")= __('share')
+  //-     li: a(href="/contact")= __('contact')

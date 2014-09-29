@@ -10,3 +10,6 @@ grid($column)
 
 offset($column)
   margin-left $column * (100 / $grid-columns)% + $grid-gutter-width
+
+rem($px, $base = 16px)
+  return unit($px/$base, 'rem')

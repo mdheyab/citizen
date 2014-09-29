@@ -1,7 +1,7 @@
 body
-  font-family $site-font-family
-  font-size $base-font-size
-  line-height $site-line-height
+  font-family $font-family
+  font-size rem($text-size)
+  line-height $line-height
   text-rendering optimizeLegibility
   -webkit-font-smoothing antialiased
 
@@ -9,7 +9,13 @@ h1, h2, h3
   margin .67em 0
 
 h1
-  font-size 48px
+  font-size rem($font-h1-size)
+
+h2
+  font-size rem($font-h2-size)
+
+h3
+  font-size rem($font-h3-size)
 
 a
   color $color-1

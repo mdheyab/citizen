@@ -15,10 +15,11 @@ define([
       urlCartoDB: _.str.sprintf('//%(user)s.cartodb.com/api/v1/sql', {
         user: sessionStorage.getItem('citizen:cartodbuser')
       }),
-      // urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
-      urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
+      urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
+      // urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
       map: {
-        center: [40.417111100000000000, -3.703113300000041000], // Puerta del Sol
+        // center: [40.417111100000000000, -3.703113300000041000], // Puerta del Sol
+        center: [40.47776996827146, -3.814659118652344],
         zoom: 11,
         zoomControl: false,
         scrollWheelZoom: false,
@@ -47,6 +48,7 @@ define([
 
     setMap: function() {
       this.map = L.map(this.el, this.options.map);
+      window.map = this.map;
       L.tileLayer(this.options.urlTiles).addTo(this.map);
     },
 
@@ -138,7 +140,7 @@ define([
         .getBounds('SELECT the_geom FROM distritos')
         .done(_.bind(function(bounds) {
           this.map.fitBounds(bounds, {
-            paddingTopLeft: [200, 0]
+            paddingTopLeft: [320, 0]
           });
         }, this));
     }
