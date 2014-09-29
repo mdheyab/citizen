@@ -5,19 +5,26 @@ define(['backbone'], function(Backbone) {
   var Router = Backbone.Router.extend({
 
     routes: {
-      '/': 'welcome',
-      '/district/:districtId': 'district',
-      '/compare/:districtA/:districtB': 'compare'
+      '': 'welcome',
+      'layer/:layerSlug': 'layer',
+      'layer/:layerSlug/:districtId': 'district'
     },
 
-    welcome: function() {},
-
-    district: function(districtId) {
-      console.log(districtId);
+    welcome: function() {
+      console.log('welcome');
     },
 
-    compare: function(districtA, districtB) {
-      console.log(districtA, districtB);
+    layer: function(layerSlug) {
+      Backbone.Events.trigger('router:change', {
+        layer: layerSlug
+      });
+    },
+
+    district: function(layerSlug, districtId) {
+      Backbone.Events.trigger('router:change', {
+        layer: layerSlug,
+        district: districtId
+      });
     }
 
   });

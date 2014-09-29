@@ -2,12 +2,15 @@
   position absolute
   top 50%
   left 11%
-  max-width 40%
-  margin-top -164px
+  max-width 25%
+  margin-top -264px
   z-index 1
 
   h1
-    color $color-3
+    color $text-color-1
+    line-height .8
+    color $text-color-2
+    text-transform uppercase
 
   ul
     list-style none
@@ -21,11 +24,11 @@
     height 41px
     padding 0 10px
     margin 0 -10px
-    color $color-3
+    color $text-color-2
     transition all ease .3s
 
     &:hover, &.active
-      background-color $color-1
+      background-color $bg-color-3
       text-decoration none
 
     &:after
@@ -42,4 +45,4 @@
       transition all ease .3s
 
     &:hover:after, &.active:after
-      border-color transparent transparent transparent $color-1
+      border-color transparent transparent transparent $bg-color-3

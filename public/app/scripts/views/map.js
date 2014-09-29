@@ -1,11 +1,9 @@
 define([
-  'underscore',
   'underscoreString',
   'backbone',
-  'text!queries/elderlyPopulation.pgsql',
-  'text!cartocss/elderlyPopulation.cartocss',
+  'collections/layers',
   'text!templates/infowindow.handlebars'
-], function(_, underscoreString, Backbone, elderlyPopulationQuery, elderlyPopulationStyle, infowindowTpl) {
+], function(_, Backbone, LayersCollection, infowindowTpl) {
 
   'use strict';
 
@@ -14,12 +12,19 @@ define([
     el: '#mapView',
 
     options: {
-      // urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
-      urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
+      urlCartoDB: _.str.sprintf('//%(user)s.cartodb.com/api/v1/sql', {
+        user: sessionStorage.getItem('citizen:cartodbuser')
+      }),
+      urlTiles: 'https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png',
+      // urlTiles: 'https://{s}.tiles.mapbox.com/v4/casius.jifc84jf/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiY2FzaXVzIiwiYSI6ImJDMkpucTQifQ.5rm4_TsT8_PH8TzOY2V3FQ',
       map: {
-        center: [40.417111100000000000, -3.703113300000041000],
+        // center: [40.417111100000000000, -3.703113300000041000], // Puerta del Sol
+        center: [40.47776996827146, -3.814659118652344],
         zoom: 11,
-        zoomControl: false
+        zoomControl: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        touchZoom: false
       },
       cartodb: {
         'user_name': sessionStorage.getItem('citizen:cartodbuser'),
@@ -29,14 +34,8 @@ define([
     },
 
     initialize: function() {
-      this.layers = {
-        'elderly-population': {
-          sql: elderlyPopulationQuery,
-          cartocss: elderlyPopulationStyle,
-          interactivity: 'name, value'
-        }
-      };
-
+      this.sql = new cartodb.SQL({ user: this.options.cartodb['user_name'] });
+      this.layers = new LayersCollection();
       this.$legend = $('#legend');
 
       this.setMap();
@@ -44,42 +43,47 @@ define([
     },
 
     setListeners: function() {
-      Backbone.Events.on('indicators:change', this.setLayer, this);
+      Backbone.Events.on('presenter:change', this.setLayer, this);
     },
 
     setMap: function() {
       this.map = L.map(this.el, this.options.map);
+      window.map = this.map;
       L.tileLayer(this.options.urlTiles).addTo(this.map);
     },
 
-    setLayer: function(layer) {
+    setLayer: function(presenter) {
       var cboptions;
 
       this.removeLegend();
 
+      this.currentLayer = this.layers.findWhere({'slug': presenter.get('layer')});
+
       if (this.layer) {
         this.layer.hide();
+        this.removeInfowindow();
       }
 
-      if (!this.layers.hasOwnProperty(layer)) {
+      if (!this.currentLayer) {
         return false;
       }
 
+      cboptions = _.defaults({sublayers: [this.currentLayer.toJSON()]}, this.options.cartodb);
+
       if (this.layer) {
-        this.layer.setSQL(this.layers[layer].sql);
-        this.layer.setCartoCSS(this.layers[layer].cartocss);
+        this.layer.setSQL(this.currentLayer.get('sql'));
+        this.layer.setCartoCSS(this.currentLayer.get('cartocss'));
+        this.setInfowindow(cboptions.sublayers[0].interactivity);
         this.setLegend();
         this.layer.show();
       } else {
-        cboptions = _.defaults({sublayers: [this.layers[layer]]}, this.options.cartodb);
-
         cartodb.createLayer(this.map, cboptions)
           .addTo(this.map)
           .on('done', _.bind(function(layer) {
             this.layer = layer.getSubLayer(0);
             this.setInfowindow(cboptions.sublayers[0].interactivity);
+            this.setBounds();
             this.setLegend();
-            this.layer.show();
           }, this))
           .on('error', function(err) {
             console.log('some error occurred: ' + err);
@@ -90,41 +94,55 @@ define([
 
     setInfowindow: function(interactivity) {
       this.infowindow = cdb.vis.Vis.addInfowindow(this.map, this.layer, interactivity, {
-        infowindowTemplate: infowindowTpl
+        infowindowTemplate: _.str.sprintf(infowindowTpl, {
+          layer: this.currentLayer.get('slug')
+        })
       });
     },
 
+    removeInfowindow: function() {
+      this.infowindow.remove();
+    },
+
     setLegend: function() {
-      var legend;
+      var legend,
+        color = this.currentLayer.get('color');
 
-      $.get(this.getLegendUrl(), {
-        q: 'SELECT min(porcent_envejecimiento), max(porcent_envejecimiento) FROM poblacion_anciana'
-      }, _.bind(function(data) {
-        legend = new cdb.geo.ui.Legend({
-          type: 'choropleth',
-          data: [
-            { value: data.rows[0].min + '%' },
-            { value: data.rows[0].max + '%' },
-            { value: '#eeeeee' },
-            { value: '#e49d95' },
-            { value: '#db4c3f' },
-            { value: '#8c3a32' },
-            { value: '#3c2825' }
-          ]
-        });
+      this.sql
+        .execute(_.str.sprintf(
+          'SELECT min(value), max(value) FROM %s',
+          this.currentLayer.get('table')
+        ))
+        .done(_.bind(function(data) {
+          legend = new cdb.geo.ui.Legend({
+            type: 'choropleth',
+            data: [
+              { value: data.rows[0].min + '%' },
+              { value: data.rows[0].max + '%' },
+              { value: color },
+              { value: color },
+              { value: color },
+              { value: color },
+              { value: color }
+            ]
+          });
 
-        this.$legend.html(legend.render().el);
-      }, this));
+          this.$legend.html(legend.render().el);
+        }, this));
     },
 
     removeLegend: function() {
       this.$legend.html('');
     },
 
-    getLegendUrl: function() {
-      return _.str.sprintf('//%(user)s.cartodb.com/api/v1/sql', {
-        user: sessionStorage.getItem('citizen:cartodbuser')
-      });
+    setBounds: function() {
+      this.sql
+        .getBounds('SELECT the_geom FROM distritos')
+        .done(_.bind(function(bounds) {
+          this.map.fitBounds(bounds, {
+            paddingTopLeft: [320, 0]
+          });
+        }, this));
     }
 
   });
